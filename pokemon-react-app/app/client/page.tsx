@@ -28,7 +28,7 @@ const ClientPage = () => {
         {pokemonList.map((pokemon, index) => (
           <li key={index}>
             {pokemon.name} {}
-            <Link href={`/client/${pokemon.name}`}>
+            <Link href={`/client/details/${pokemon.name}`}>
               <a>Details</a> {}
             </Link>
           </li>
