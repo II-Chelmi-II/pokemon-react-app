@@ -1,36 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { Pokemon } from '../../utils/api/types'; 
+import { Pokemon } from '../../utils/api/types';
 
-const ServerPage = () => {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+const ServerPage = ({ pokemonList }: { pokemonList?: Pokemon[] }) => {
+  const itemsPerPage = 50; 
+  const totalPages = pokemonList ? Math.ceil(pokemonList.length / itemsPerPage) : 0; 
 
-  useEffect(() => {
-    const fetchPokemonList = async () => {
-      try {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50&offset=0');
-        const data = await response.json();
-        setPokemonList(data.results);
-      } catch (error) {
-        console.error('Error fetching Pokemon list:', error);
-      }
-    };
-
-    fetchPokemonList();
-  }, []);
+  const getPokemonForPage = (page: number): Pokemon[] => {
+    if (!pokemonList) return [];
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return pokemonList.slice(startIndex, endIndex);
+  };
 
   return (
     <div>
       <h1>List of Pokémon</h1>
       <ul>
-        {pokemonList.map((pokemon, index) => (
-          <li key={index}>
-            {pokemon.name} {}
-            <Link href={`/server/${pokemon.name}`}>
-              <a>Details</a> {}
-            </Link>
-          </li>
-        ))}
+        {pokemonList &&
+          getPokemonForPage(1).map((pokemon, index) => (
+            <li key={index}>
+              {pokemon.name}{' '}
+              <Link href={`/server/${pokemon.name}`}>
+                <a>Details</a>{' '}
+              </Link>
+            </li>
+          ))}
       </ul>
     </div>
   );
