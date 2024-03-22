@@ -21,13 +21,13 @@ const ClientPage = () => {
 
   return (
     <div>
-      <h1>Liste de Pokémon (Client)</h1>
+      <h1>List of Pokémon (Client)</h1>
       <ul>
         {pokemonList.map((pokemon, index) => (
           <li key={index}>
             {pokemon.name} {}
             <Link href={`/client/${pokemon.name}`}>
-              <a>Détails</a> {}
+              <a>Details</a> {}
             </Link>
           </li>
         ))}
